@@ -17,6 +17,7 @@ export function head(site) {
   const first = site.hero.scenes[0];
   const ld = JSON.stringify(jsonLd(site)).replace(/</g, '\\u003c');
   return `
+<title>${esc(m.title)}</title>
 <meta name="description" content="${esc(m.description)}">
 ${m.keywords ? `<meta name="keywords" content="${esc(m.keywords)}">\n` : ''}<meta name="theme-color" content="${esc(m.themeColor)}">
 <meta name="robots" content="${esc(m.robots || 'index, follow')}">
@@ -236,6 +237,7 @@ export function legalPage(site, key, cssPath = 'css/style.css') {
 <title>${esc(page.title)}｜${esc(site.brand.name)}</title>
 <meta name="description" content="${esc(site.brand.name)}${esc(page.title)}，更新于 ${esc(site.legal.updated)}。">
 <meta name="robots" content="${esc(site.meta.robots || 'index, follow')}">
+<link rel="canonical" href="${esc(site.meta.url)}/${key}.html">
 <meta name="theme-color" content="${esc(site.meta.themeColor)}">
 <link rel="icon" href="${favicon(site)}">
 <link rel="stylesheet" href="css/fonts.css">

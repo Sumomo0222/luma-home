@@ -226,7 +226,20 @@ refs.forEach(([file, where]) => seen.set(file, [...(seen.get(file) || []), where
   if (tip) warn(`图片尺寸不合适：${file} 现为 ${s.w}×${s.h}，${tip}`);
 });
 
-/* ───────────── 6. 输出结果 ───────────── */
+/* ───────────── 6. 检查：生成页面的基本要素 ───────────── */
+for (const [name, doc] of Object.entries({ 'index.html': html, ...legal, '404.html': notFound })) {
+  if (!/<title>[^<]+<\/title>/.test(doc)) err(`${name} 缺少 <title>`);
+  if (name !== '404.html' && !/name="description"/.test(doc)) err(`${name} 缺少 meta description`);
+  if (name !== '404.html' && !/rel="canonical"/.test(doc)) err(`${name} 缺少 canonical 链接`);
+  for (const tag of ['html', 'head', 'body', 'main']) {
+    const opens = (doc.match(new RegExp(`<${tag}\\b[^>]*>`, 'g')) || []).length;
+    const closes = (doc.match(new RegExp(`</${tag}>`, 'g')) || []).length;
+    if (opens !== closes) err(`${name} 的 <${tag}> 标签没有配对（${opens} 个开始，${closes} 个结束）`);
+  }
+  if (/\{\{[\w.]+\}\}|<!--@/.test(doc)) err(`${name} 里有未替换的模板占位符`);
+}
+
+/* ───────────── 7. 输出结果 ───────────── */
 const pad = (s) => String(s).padStart(2, '0');
 const line = (mark, m) => console.log(`  ${mark} ${m}`);
 console.log(`\nLuma Home 构建${CHECK_ONLY ? '检查' : '完成'}  ${pad(new Date().getHours())}:${pad(new Date().getMinutes())}`);
