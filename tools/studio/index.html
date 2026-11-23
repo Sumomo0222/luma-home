@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Luma Home 占位图渲染台</title>
+<style>html,body{margin:0;background:#111;color:#ddd;font:14px/1.6 system-ui,sans-serif}main{padding:32px}code{color:#fc6}</style>
+</head>
+<body>
+<main>
+  <h1>Luma Home 占位图渲染台</h1>
+  <p>这个页面由 <code>tools/render-assets.mjs</code> 驱动，用来把 3D 场景渲染成 <code>assets/img</code> 下的占位图。直接打开本页没有可操作的内容。</p>
+  <p id="status">正在初始化…</p>
+</main>
+<script type="module" src="./studio.js"></script>
+<script>
+  window.addEventListener('load', () => {
+    const el = document.getElementById('status');
+    const t = setInterval(() => {
+      if (window.studio) { el.textContent = '就绪，等待指令。'; clearInterval(t); }
+    }, 200);
+  });
+</script>
+</body>
+</html>

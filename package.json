@@ -1,0 +1,16 @@
+{
+  "name": "luma-home-landing",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Luma Home 落地页：改 site.config.js、替换 assets/img 里的图片即可上线。",
+  "scripts": {
+    "build": "node build.mjs",
+    "check": "node build.mjs --check",
+    "dev": "node tools/dev.mjs",
+    "assets": "node tools/render-assets.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
